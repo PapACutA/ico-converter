@@ -33,11 +33,10 @@ class icoConverterApp(tk.Tk):
 
         # Buttons
         btn_load = tk.Button(text="Open Image", command= lambda: self.openImage())
-        # btn_load.grid(row= 1, column= 1)
         btn_load.pack()
-        btn_save = tk.Button(text="Save Icon", command= lambda: self.saveIcon())
-        # btn_save.grid(row= 1, column= 2)
-        btn_save.pack()
+        self.btn_save = tk.Button(text="Save Icon", command= lambda: self.saveIcon())
+        self.btn_save.pack()
+        self.btn_save["state"] = "disabled"
         
         lbl_preview = tk.Label(text="Icon Preview:", anchor=tk.W)
         # self.lbl_preview.grid(row= 2, column= 1)
@@ -95,10 +94,16 @@ class icoConverterApp(tk.Tk):
             messagebox.showerror(title="Preview could not be generated!", message="An error occured while preparing the preview.")
             return
         
+        self.btn_save["state"] = "normal"
+        
     def saveIcon(self):
         if len(self.img_list) != 0:
-            icon_path = filedialog.asksaveasfilename(filetypes=[("Icon", ".ico")])
-
+            icon_path = filedialog.asksaveasfilename(filetypes=[("Icon", ".ico")], defaultextension=".ico", initialfile="icon.ico")
+            
+            # return if save file dialog is canceld
+            if icon_path == "":
+                return
+            
             # create an empty image container for the icon
             im = Image.new('RGBA', (257, 257))
 
