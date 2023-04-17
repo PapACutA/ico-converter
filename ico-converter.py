@@ -36,10 +36,10 @@ class icoConverterApp(tk.Tk):
         btn_load.pack()
         self.btn_save = tk.Button(text="Save Icon", command= lambda: self.saveIcon())
         self.btn_save.pack()
+        # deactivate save button by default / as long as there is now icon to save
         self.btn_save["state"] = "disabled"
-        
+
         lbl_preview = tk.Label(text="Icon Preview:", anchor=tk.W)
-        # self.lbl_preview.grid(row= 2, column= 1)
         lbl_preview.pack()
         sizes = [16, 24, 32 ,48, 64, 128, 256]
         lbl_sizes = []
@@ -49,15 +49,11 @@ class icoConverterApp(tk.Tk):
             # Labels
             index = sizes.index(size)
             lbl_sizes.append(tk.Label(text=str(size)+" x "+str(size)))
-            # lbl_sizes[index].grid(row= 3, column=7-index)
             lbl_sizes[index].pack()
 
             # Preview Images of the different sizes
-            index = sizes.index(size)
             self.can.append(tk.Canvas(self, width=size+10, height=size+10))
-            # self.can[index].grid(row= 4, column= 7-index)
             self.can[index].pack()
-            index = sizes.index(size)
             self.img_pre = ImageTk.PhotoImage(Image.new('RGBA', (size, size)))
             self.img_preview.append(self.can[index].create_image(5,5,anchor=tk.NW, image=self.img_pre))
 
@@ -94,6 +90,7 @@ class icoConverterApp(tk.Tk):
             messagebox.showerror(title="Preview could not be generated!", message="An error occured while preparing the preview.")
             return
         
+        # activate save button
         self.btn_save["state"] = "normal"
         
     def saveIcon(self):
@@ -143,10 +140,10 @@ class icoConverterApp(tk.Tk):
             img = img_boxed
 
         # scale image according to icon sizes
-        sizes = [(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)]
+        icon_sizes = [(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)]
 
         img_list = []
-        for size in sizes:
+        for size in icon_sizes:
             img_list.append(img.resize(size))
 
         return img_list
